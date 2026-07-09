@@ -1,0 +1,68 @@
+const HeroContent = require('../models/HeroContent');
+const { upload, deleteFile } = require('../middleware/upload');
+
+const getHero = async (req, res) => {
+  let hero = await HeroContent.findOne();
+
+  if (!hero) {
+    hero = await HeroContent.create({
+      title: 'Welcome to RSK Associates',
+      subtitle: 'Professional Audit, Tax Advisory, and Financial Consulting Services',
+      trust: 'Trusted by 500+ businesses worldwide',
+    });
+  }
+
+  return res.status(200).json({
+    success: true,
+    message: 'Hero content retrieved successfully',
+    data: { hero },
+  });
+};
+
+const updateHero = async (req, res) => {
+  let hero = await HeroContent.findOne();
+
+  if (!hero) {
+    hero = await HeroContent.create(req.body);
+  } else {
+    Object.assign(hero, req.body);
+    await hero.save();
+  }
+
+  return res.status(200).json({
+    success: true,
+    message: 'Hero content updated successfully',
+    data: { hero },
+  });
+};
+
+const uploadHeroImage = async (req, res) => {
+  let hero = await HeroContent.findOne();
+
+  if (!hero) {
+    return res.status(404).json({
+      success: false,
+      message: 'Hero content not found',
+      errors: ['Please create hero content first'],
+    });
+  }
+
+  if (hero.bgImage) {
+    deleteFile(hero.bgImage);
+  }
+
+  hero.bgImage = `/uploads/${req.file.filename}`;
+  await hero.save();
+
+  return res.status(200).json({
+    success: true,
+    message: 'Hero image uploaded successfully',
+    data: { hero },
+  });
+};
+
+module.exports = {
+  getHero,
+  updateHero,
+  uploadHeroImage,
+};
