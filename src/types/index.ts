@@ -100,27 +100,17 @@ export interface ContactMessage {
 }
 
 export interface ContactMethod {
-
   label:string;
-
   value:string;
-
   href?:string | null;
-
 }
 
 export interface AboutUs {
-
  _id:string;
-
  title:string;
-
  description:string;
-
  stats:AboutStat[];
-
  contactMethods:ContactMethod[];
-
 }
 
 // Generic API envelope returned by the backend.
