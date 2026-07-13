@@ -5,6 +5,7 @@ const {
   getContactMessages,
   getContactMessage,
   deleteContactMessage,
+  replyToMessage,
 } = require('../controllers/contactController');
 const { validateContact } = require('../validators/contactValidator');
 const { protect } = require('../middleware/auth');
@@ -18,5 +19,6 @@ router.use(protect);
 router.get('/', getContactMessages);
 router.get('/:id', getContactMessage);
 router.delete('/:id', deleteContactMessage);
+router.post('/:id/reply', body('reply').notEmpty().withMessage('Reply is required').trim(), replyToMessage);
 
 module.exports = router;

@@ -19,6 +19,22 @@ const contactMessageSchema = new mongoose.Schema(
       required: [true, 'Message is required'],
       trim: true,
     },
+    reply: {
+      type: String,
+      trim: true,
+    },
+    replyAt: {
+      type: Date,
+    },
+    repliedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+    status: {
+      type: String,
+      enum: ['pending', 'replied'],
+      default: 'pending',
+    },
   },
   {
     timestamps: true,
